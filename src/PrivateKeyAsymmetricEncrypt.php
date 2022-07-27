@@ -23,6 +23,7 @@ namespace Whoa\Crypt;
 
 use Whoa\Crypt\Contracts\EncryptInterface;
 use Whoa\Crypt\Exceptions\CryptException;
+
 use function openssl_private_encrypt;
 
 /**
@@ -35,7 +36,7 @@ class PrivateKeyAsymmetricEncrypt extends BasePrivateKeyAsymmetricCrypt implemen
      */
     public function encrypt(string $data): string
     {
-        $result           = null;
+        $result = null;
         $encryptChunkSize = $this->getEncryptChunkSize();
         if ($encryptChunkSize !== null) {
             $key = $this->getKey();

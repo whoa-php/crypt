@@ -22,13 +22,17 @@ declare(strict_types=1);
 namespace Whoa\Tests\Crypt;
 
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Whoa\Contracts\Application\ContainerConfiguratorInterface;
 use Whoa\Contracts\Container\ContainerInterface;
+use Whoa\Contracts\Settings\Packages\AsymmetricCryptSettingsInterface;
 use Whoa\Contracts\Settings\SettingsInterface;
 use Whoa\Contracts\Settings\SettingsProviderInterface;
 use Whoa\Crypt\Contracts\DecryptInterface;
 use Whoa\Crypt\Contracts\EncryptInterface;
 use Whoa\Crypt\Contracts\HasherInterface;
+use Whoa\Crypt\Exceptions\CryptConfigurationException;
 use Whoa\Crypt\Package\AsymmetricCryptSettings;
 use Whoa\Crypt\Package\AsymmetricPrivateEncryptPublicDecryptProvider;
 use Whoa\Crypt\Package\AsymmetricPublicEncryptPrivateDecryptProvider;
@@ -48,8 +52,8 @@ class PackageTest extends TestCase
 {
     /**
      * Test provider.
-     *
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testAsymmetricPrivateEncryptPublicDecrypt1(): void
     {
@@ -67,10 +71,12 @@ class PackageTest extends TestCase
 
     /**
      * Test provider.
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testAsymmetricPrivateEncryptPublicDecrypt2(): void
     {
-        $this->expectException(\Whoa\Crypt\Exceptions\CryptConfigurationException::class);
+        $this->expectException(CryptConfigurationException::class);
 
         $container = new TestContainer();
 
@@ -85,10 +91,12 @@ class PackageTest extends TestCase
 
     /**
      * Test provider.
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testAsymmetricPrivateEncryptPublicDecrypt3(): void
     {
-        $this->expectException(\Whoa\Crypt\Exceptions\CryptConfigurationException::class);
+        $this->expectException(CryptConfigurationException::class);
 
         $container = new TestContainer();
 
@@ -103,8 +111,8 @@ class PackageTest extends TestCase
 
     /**
      * Test provider.
-     *
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testPublicEncryptPrivateDecrypt1(): void
     {
@@ -122,10 +130,12 @@ class PackageTest extends TestCase
 
     /**
      * Test provider.
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testPublicEncryptPrivateDecrypt2(): void
     {
-        $this->expectException(\Whoa\Crypt\Exceptions\CryptConfigurationException::class);
+        $this->expectException(CryptConfigurationException::class);
 
         $container = new TestContainer();
 
@@ -140,10 +150,12 @@ class PackageTest extends TestCase
 
     /**
      * Test provider.
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testPublicEncryptPrivateDecrypt3(): void
     {
-        $this->expectException(\Whoa\Crypt\Exceptions\CryptConfigurationException::class);
+        $this->expectException(CryptConfigurationException::class);
 
         $container = new TestContainer();
 
@@ -158,14 +170,14 @@ class PackageTest extends TestCase
 
     /**
      * Test provider.
-     *
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testSymmetricCrypt(): void
     {
         $container = new TestContainer();
 
-        $settings  = new class extends SymmetricCryptSettings {
+        $settings = new class extends SymmetricCryptSettings {
             /**
              * @inheritdoc
              */
@@ -173,7 +185,7 @@ class PackageTest extends TestCase
             {
                 return [
 
-                        static::KEY_PASSWORD           => 'secret',
+                        static::KEY_PASSWORD => 'secret',
                         static::KEY_USE_AUTHENTICATION => true,
 
                     ] + parent::getSettings();
@@ -192,8 +204,8 @@ class PackageTest extends TestCase
 
     /**
      * Test provider.
-     *
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testHasher(): void
     {
@@ -213,12 +225,11 @@ class PackageTest extends TestCase
 
     /**
      * @param ContainerInterface $container
-     *
      * @return PackageTest
      */
     private function addAsymmetricCryptSettingsProvider(ContainerInterface $container): self
     {
-        $settings  = $this->getAsymmetricSettings($this->getPathToPublicKey(), $this->getPathToPrivateKey());
+        $settings = $this->getAsymmetricSettings($this->getPathToPublicKey(), $this->getPathToPrivateKey());
         $appConfig = [];
 
         return $this->addSettings($container, AsymmetricCryptSettings::class, $settings->get($appConfig));
@@ -226,21 +237,19 @@ class PackageTest extends TestCase
 
     /**
      * @param ContainerInterface $container
-     *
      * @return PackageTest
      */
     private function addInvalidAsymmetricCryptSettingsProvider(ContainerInterface $container): self
     {
         return $this->addSettings($container, AsymmetricCryptSettings::class, [
-            AsymmetricCryptSettings::KEY_PUBLIC_PATH_OR_KEY_VALUE  => null,
-            AsymmetricCryptSettings::KEY_PRIVATE_PATH_OR_KEY_VALUE => null,
+            AsymmetricCryptSettingsInterface::KEY_PUBLIC_PATH_OR_KEY_VALUE => null,
+            AsymmetricCryptSettingsInterface::KEY_PRIVATE_PATH_OR_KEY_VALUE => null,
         ]);
     }
 
     /**
      * @param string $publicValue
      * @param string $privateValue
-     *
      * @return SettingsInterface
      */
     private function getAsymmetricSettings(string $publicValue, string $privateValue): SettingsInterface
@@ -249,12 +258,12 @@ class PackageTest extends TestCase
             /**
              * @var string
              */
-            private $publicValue;
+            private string $publicValue;
 
             /**
              * @var string
              */
-            private $privateValue;
+            private string $privateValue;
 
             /**
              * @param string $publicValue
@@ -262,7 +271,7 @@ class PackageTest extends TestCase
              */
             public function __construct(string $publicValue, string $privateValue)
             {
-                $this->publicValue  = $publicValue;
+                $this->publicValue = $publicValue;
                 $this->privateValue = $privateValue;
             }
 
@@ -273,7 +282,7 @@ class PackageTest extends TestCase
             {
                 return [
 
-                        static::KEY_PUBLIC_PATH_OR_KEY_VALUE  => $this->publicValue,
+                        static::KEY_PUBLIC_PATH_OR_KEY_VALUE => $this->publicValue,
                         static::KEY_PRIVATE_PATH_OR_KEY_VALUE => $this->privateValue,
 
                     ] + parent::getSettings();
@@ -283,9 +292,8 @@ class PackageTest extends TestCase
 
     /**
      * @param ContainerInterface $container
-     * @param string             $settingsClass
-     * @param array              $settings
-     *
+     * @param string $settingsClass
+     * @param array $settings
      * @return PackageTest
      */
     private function addSettings(ContainerInterface $container, string $settingsClass, array $settings): self

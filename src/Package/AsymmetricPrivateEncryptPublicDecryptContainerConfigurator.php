@@ -38,7 +38,7 @@ use Psr\Container\ContainerInterface as PsrContainerInterface;
 class AsymmetricPrivateEncryptPublicDecryptContainerConfigurator implements ContainerConfiguratorInterface
 {
     /** @var callable */
-    const CONFIGURATOR = [self::class, self::CONTAINER_METHOD_NAME];
+    public const CONFIGURATOR = [self::class, self::CONTAINER_METHOD_NAME];
 
     /**
      * @inheritdoc
@@ -46,27 +46,23 @@ class AsymmetricPrivateEncryptPublicDecryptContainerConfigurator implements Cont
     public static function configureContainer(WhoaContainerInterface $container): void
     {
         $container[EncryptInterface::class] = function (PsrContainerInterface $container): EncryptInterface {
-            $settings  = $container->get(SettingsProviderInterface::class)->get(C::class);
+            $settings = $container->get(SettingsProviderInterface::class)->get(C::class);
             $keyOrPath = $settings[C::KEY_PRIVATE_PATH_OR_KEY_VALUE] ?? null;
             if (empty($keyOrPath) === true) {
                 throw new CryptConfigurationException();
             }
 
-            $crypt = new PrivateKeyAsymmetricEncrypt($keyOrPath);
-
-            return $crypt;
+            return new PrivateKeyAsymmetricEncrypt($keyOrPath);
         };
 
         $container[DecryptInterface::class] = function (PsrContainerInterface $container): DecryptInterface {
-            $settings  = $container->get(SettingsProviderInterface::class)->get(C::class);
+            $settings = $container->get(SettingsProviderInterface::class)->get(C::class);
             $keyOrPath = $settings[C::KEY_PUBLIC_PATH_OR_KEY_VALUE] ?? null;
             if (empty($keyOrPath) === true) {
                 throw new CryptConfigurationException();
             }
 
-            $crypt = new PublicKeyAsymmetricDecrypt($keyOrPath);
-
-            return $crypt;
+            return new PublicKeyAsymmetricDecrypt($keyOrPath);
         };
     }
 }

@@ -29,6 +29,7 @@ use Whoa\Crypt\Contracts\EncryptInterface;
 use Whoa\Crypt\SymmetricCrypt;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Whoa\Crypt\Package\SymmetricCryptSettings as C;
+
 use function array_key_exists;
 
 /**
@@ -37,7 +38,7 @@ use function array_key_exists;
 class SymmetricCryptContainerConfigurator implements ContainerConfiguratorInterface
 {
     /** @var callable */
-    const CONFIGURATOR = [self::class, self::CONTAINER_METHOD_NAME];
+    public const CONFIGURATOR = [self::class, self::CONTAINER_METHOD_NAME];
 
     /**
      * @inheritdoc
@@ -49,7 +50,7 @@ class SymmetricCryptContainerConfigurator implements ContainerConfiguratorInterf
         $instanceFactory = function (PsrContainerInterface $container) use (&$crypt) {
             if ($crypt === null) {
                 $settings = $container->get(SettingsProviderInterface::class)->get(C::class);
-                $crypt    = new SymmetricCrypt($settings[C::KEY_METHOD], $settings[C::KEY_PASSWORD]);
+                $crypt = new SymmetricCrypt($settings[C::KEY_METHOD], $settings[C::KEY_PASSWORD]);
 
                 $vector = $settings[C::KEY_IV] ?? '';
                 empty($vector) === true ?: $crypt->setIV($vector);

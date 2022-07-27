@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace Whoa\Crypt\Package;
 
 use Whoa\Contracts\Settings\Packages\AsymmetricCryptSettingsInterface;
+
 use function assert;
 
 /**

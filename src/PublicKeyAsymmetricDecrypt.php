@@ -23,6 +23,7 @@ namespace Whoa\Crypt;
 
 use Whoa\Crypt\Contracts\DecryptInterface;
 use Whoa\Crypt\Exceptions\CryptException;
+
 use function openssl_public_decrypt;
 
 /**
@@ -35,7 +36,7 @@ class PublicKeyAsymmetricDecrypt extends BasePublicKeyAsymmetricCrypt implements
      */
     public function decrypt(string $data): string
     {
-        $result           = null;
+        $result = null;
         $decryptChunkSize = $this->getDecryptChunkSize();
         if ($decryptChunkSize !== null) {
             $key = $this->getKey();

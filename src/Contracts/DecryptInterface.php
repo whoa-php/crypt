@@ -28,7 +28,6 @@ interface DecryptInterface
 {
     /**
      * @param string $data
-     *
      * @return string
      */
     public function decrypt(string $data): string;

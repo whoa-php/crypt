@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace Whoa\Crypt\Package;
 
 use Whoa\Contracts\Settings\Packages\SymmetricCryptSettingsInterface;
+
 use function assert;
 
 /**
@@ -48,11 +49,11 @@ class SymmetricCryptSettings implements SymmetricCryptSettingsInterface
     protected function getSettings(): array
     {
         return [
-            static::KEY_METHOD             => static::DEFAULT_METHOD,
-            static::KEY_IV                 => static::DEFAULT_IV,
-            static::KEY_USE_ZERO_PADDING   => false,
+            static::KEY_METHOD => static::DEFAULT_METHOD,
+            static::KEY_IV => static::DEFAULT_IV,
+            static::KEY_USE_ZERO_PADDING => false,
             static::KEY_USE_AUTHENTICATION => false,
-            static::KEY_TAG_LENGTH         => 16,
+            static::KEY_TAG_LENGTH => 16,
         ];
     }
 }

@@ -23,6 +23,7 @@ namespace Whoa\Crypt;
 
 use Generator;
 use Whoa\Crypt\Exceptions\CryptException;
+
 use function assert;
 use function file_exists;
 use function openssl_pkey_free;
@@ -43,7 +44,7 @@ abstract class BaseAsymmetricCrypt extends BaseCrypt
     /**
      * @var int|null
      */
-    private $keyBytes = null;
+    private ?int $keyBytes = null;
 
     /**
      * Destructor.
@@ -60,7 +61,7 @@ abstract class BaseAsymmetricCrypt extends BaseCrypt
     {
         if ($this->key !== null) {
             openssl_pkey_free($this->key);
-            $this->key      = null;
+            $this->key = null;
             $this->keyBytes = null;
         }
 
@@ -113,9 +114,7 @@ abstract class BaseAsymmetricCrypt extends BaseCrypt
         $keyBytes = $this->getKeyBytes();
 
         // 11 is a kind of magic number related to padding.
-        $result = $keyBytes === null ? null : $keyBytes - 11;
-
-        return $result;
+        return $keyBytes === null ? null : $keyBytes - 11;
     }
 
     /**
@@ -124,15 +123,12 @@ abstract class BaseAsymmetricCrypt extends BaseCrypt
     protected function getDecryptChunkSize(): ?int
     {
         $keyBytes = $this->getKeyBytes();
-        $result   = $keyBytes === null ? null : $keyBytes;
-
-        return $result;
+        return $keyBytes === null ? null : $keyBytes;
     }
 
     /**
      * @param string $value
-     * @param int    $maxSize
-     *
+     * @param int $maxSize
      * @return Generator
      */
     protected function chunkString(string $value, int $maxSize): Generator
@@ -142,7 +138,7 @@ abstract class BaseAsymmetricCrypt extends BaseCrypt
         assert($isValidInput === true);
 
         if ($isValidInput === true) {
-            $start  = 0;
+            $start = 0;
             $length = strlen($value);
             if ($length === 0) {
                 yield $value;
@@ -156,7 +152,6 @@ abstract class BaseAsymmetricCrypt extends BaseCrypt
 
     /**
      * @param string $path
-     *
      * @return bool
      */
     protected function checkIfPathToFileCheckPrefix(string $path): bool

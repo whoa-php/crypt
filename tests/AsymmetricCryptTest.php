@@ -1,9 +1,8 @@
-<?php declare(strict_types=1);
-
-namespace Whoa\Tests\Crypt;
+<?php
 
 /**
  * Copyright 2015-2019 info@neomerx.com
+ * Modification Copyright 2021-2022 info@whoaphp.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +17,10 @@ namespace Whoa\Tests\Crypt;
  * limitations under the License.
  */
 
+declare(strict_types=1);
+
+namespace Whoa\Tests\Crypt;
+
 use Exception;
 use Whoa\Crypt\PrivateKeyAsymmetricDecrypt;
 use Whoa\Crypt\PrivateKeyAsymmetricEncrypt;
@@ -31,14 +34,13 @@ use PHPUnit\Framework\TestCase;
 class AsymmetricCryptTest extends TestCase
 {
     /** Path to key file */
-    const PRIVATE_FILE = __DIR__ . DIRECTORY_SEPARATOR . 'Data'  . DIRECTORY_SEPARATOR . 'sample_private_key.pem';
+    public const PRIVATE_FILE = __DIR__ . DIRECTORY_SEPARATOR . 'Data' . DIRECTORY_SEPARATOR . 'sample_private_key.pem';
 
     /** Path to key file */
-    const PUBLIC_FILE  = __DIR__ . DIRECTORY_SEPARATOR . 'Data'  . DIRECTORY_SEPARATOR . 'sample_public_key.pem';
+    public const PUBLIC_FILE = __DIR__ . DIRECTORY_SEPARATOR . 'Data' . DIRECTORY_SEPARATOR . 'sample_public_key.pem';
 
     /**
      * Test encrypt & decrypt.
-     *
      * @throws Exception
      */
     public function testEncryptDecrypt1(): void
@@ -56,7 +58,6 @@ class AsymmetricCryptTest extends TestCase
 
     /**
      * Test encrypt & decrypt.
-     *
      * @throws Exception
      */
     public function testEncryptDecrypt2(): void
@@ -74,7 +75,6 @@ class AsymmetricCryptTest extends TestCase
 
     /**
      * Test encrypt & decrypt.
-     *
      * @throws Exception
      */
     public function testEncryptDecrypt3(): void

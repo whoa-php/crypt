@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace Whoa\Crypt;
 
 use Whoa\Crypt\Exceptions\CryptException;
+
 use function openssl_error_string;
 
 /**
@@ -55,7 +56,6 @@ abstract class BaseCrypt
 
     /**
      * @param CryptException $exception
-     *
      * @return void
      */
     protected function throwException(CryptException $exception): void
@@ -65,7 +65,6 @@ abstract class BaseCrypt
 
     /**
      * We need this wrapper for testing purposes so we can mock system call to Open SSL.
-     *
      * @return string|false
      */
     protected function openSslErrorString()

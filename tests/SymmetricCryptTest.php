@@ -35,19 +35,18 @@ class SymmetricCryptTest extends TestCase
 {
     /**
      * Test encrypt & decrypt.
-     *
      * @throws Exception
      */
     public function testEncryptDecrypt(): void
     {
         $input = str_repeat('Hello world' . PHP_EOL, 1000);
 
-        $crypt     = new SymmetricCrypt('aes128', 'secret');
+        $crypt = new SymmetricCrypt('aes128', 'secret');
         $encrypted = $crypt->withoutZeroPadding()->disableAuthentication()->encrypt($input);
         $this->assertNotEmpty($encrypted);
         $this->assertNotEquals($input, $encrypted);
 
-        $crypt     = new SymmetricCrypt('aes128', 'secret');
+        $crypt = new SymmetricCrypt('aes128', 'secret');
         $decrypted = $crypt->decrypt($encrypted);
         $this->assertNotEmpty($decrypted);
         $this->assertEquals($input, $decrypted);
@@ -55,14 +54,13 @@ class SymmetricCryptTest extends TestCase
 
     /**
      * Test encrypt & decrypt.
-     *
      * @throws Exception
      */
     public function testAuthenticatedEncryptDecrypt(): void
     {
         $input = str_repeat('Hello world' . PHP_EOL, 1000);
 
-        $crypt     = new SymmetricCrypt('aes-256-gcm', 'secret');
+        $crypt = new SymmetricCrypt('aes-256-gcm', 'secret');
         $encrypted = $crypt
             ->withoutZeroPadding()
             ->enableAuthentication()
@@ -72,7 +70,7 @@ class SymmetricCryptTest extends TestCase
         $this->assertNotEmpty($encrypted);
         $this->assertNotEquals($input, $encrypted);
 
-        $crypt     = new SymmetricCrypt('aes-256-gcm', 'secret');
+        $crypt = new SymmetricCrypt('aes-256-gcm', 'secret');
         $decrypted = $crypt
             ->withoutZeroPadding()
             ->enableAuthentication()
@@ -85,7 +83,6 @@ class SymmetricCryptTest extends TestCase
 
     /**
      * Test error handling.
-     *
      * @throws Exception
      */
     public function testSslErrorOccurred(): void
@@ -164,7 +161,6 @@ class SymmetricCryptTest extends TestCase
 
     /**
      * Test compatibility with Open SSL CLI.
-     *
      * @throws Exception
      */
     public function testCompatibilityWithOpenSslCli(): void
@@ -173,7 +169,7 @@ class SymmetricCryptTest extends TestCase
         $input = 'Hello world';
 
         // These are algorithm and password the input was encoded with
-        $method   = 'aes-128-cbc';
+        $method = 'aes-128-cbc';
         $password = 'secret';
 
         // Input was encoded with OPENSSL_RAW_DATA option (so it's not in base64 as by default)
@@ -184,7 +180,7 @@ class SymmetricCryptTest extends TestCase
 
         $hexPassword = bin2hex($password);
         $passPadding = str_repeat('0', strlen($hexVector) - strlen($hexPassword));
-        $exec        = "openssl enc -$method -d -in $fileName -K $hexPassword$passPadding -iv $hexVector";
+        $exec = "openssl enc -$method -d -in $fileName -K $hexPassword$passPadding -iv $hexVector";
 
         $encoded = exec($exec, $output, $retVal);
 

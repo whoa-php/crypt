@@ -35,7 +35,7 @@ use Whoa\Crypt\Package\HasherSettings as C;
 class HasherContainerConfigurator implements ContainerConfiguratorInterface
 {
     /** @var callable */
-    const CONFIGURATOR = [self::class, self::CONTAINER_METHOD_NAME];
+    public const CONFIGURATOR = [self::class, self::CONTAINER_METHOD_NAME];
 
     /**
      * @inheritdoc
@@ -44,9 +44,7 @@ class HasherContainerConfigurator implements ContainerConfiguratorInterface
     {
         $container[HasherInterface::class] = function (PsrContainerInterface $container): HasherInterface {
             $settings = $container->get(SettingsProviderInterface::class)->get(C::class);
-            $hasher   = new Hasher($settings[C::KEY_ALGORITHM], $settings[C::KEY_COST]);
-
-            return $hasher;
+            return new Hasher($settings[C::KEY_ALGORITHM], $settings[C::KEY_COST]);
         };
     }
 }

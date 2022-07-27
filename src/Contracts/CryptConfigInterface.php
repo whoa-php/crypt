@@ -27,8 +27,8 @@ namespace Whoa\Crypt\Contracts;
 interface CryptConfigInterface
 {
     /** Config key */
-    const HASH_ALGORITHM = 0;
+    public const HASH_ALGORITHM = 0;
 
     /** Config key */
-    const HASH_COST = self::HASH_ALGORITHM + 1;
+    public const HASH_COST = self::HASH_ALGORITHM + 1;
 }

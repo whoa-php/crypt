@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace Whoa\Crypt;
 
 use Whoa\Crypt\Contracts\HasherInterface;
+
 use function assert;
 use function password_hash;
 use function password_verify;
@@ -39,18 +40,18 @@ class Hasher implements HasherInterface
     /**
      * @var array
      */
-    private $options;
+    private array $options;
 
     /**
      * @param string $algorithm
-     * @param int    $cost
+     * @param int $cost
      */
     public function __construct(string $algorithm = PASSWORD_DEFAULT, int $cost = 10)
     {
         assert($cost > 0);
 
         $this->algorithm = $algorithm;
-        $this->options   = [
+        $this->options = [
             'cost' => $cost,
         ];
     }
@@ -60,9 +61,7 @@ class Hasher implements HasherInterface
      */
     public function hash(string $password): string
     {
-        $hash = password_hash($password, $this->algorithm, $this->options);
-
-        return $hash;
+        return password_hash($password, $this->algorithm, $this->options);
     }
 
     /**
@@ -70,8 +69,6 @@ class Hasher implements HasherInterface
      */
     public function verify(string $password, string $hash): bool
     {
-        $result = password_verify($password, $hash);
-
-        return $result;
+        return password_verify($password, $hash);
     }
 }

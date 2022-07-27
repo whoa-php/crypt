@@ -28,7 +28,6 @@ interface EncryptInterface
 {
     /**
      * @param string $data
-     *
      * @return string
      */
     public function encrypt(string $data): string;

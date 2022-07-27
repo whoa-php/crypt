@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace Whoa\Crypt;
 
 use Whoa\Crypt\Exceptions\CryptException;
+
 use function assert;
 use function openssl_pkey_get_public;
 

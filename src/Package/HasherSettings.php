@@ -45,7 +45,7 @@ class HasherSettings implements HasherSettingsInterface
             /** @see http://php.net/manual/en/password.constants.php */
             static::KEY_ALGORITHM => PASSWORD_DEFAULT,
             /** @see http://php.net/manual/en/function.password-hash.php */
-            static::KEY_COST      => 10,
+            static::KEY_COST => 10,
         ];
     }
 }
